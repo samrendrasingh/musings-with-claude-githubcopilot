@@ -326,7 +326,7 @@
       <a href="#sec-17"><span class="n">17</span>Subagents &amp; Parallel</a>
       <a href="#sec-18"><span class="n">18</span>Hooks &amp; Automation</a>
       <a href="#sec-19"><span class="n">19</span>Security</a>
-      <a href="#sec-20"><span class="n">20</span>Platforms</a>
+      <a href="#sec-20"><span class="n">20</span>CLI vs Extension</a>
       <a href="#sec-21"><span class="n">21</span>Cost &amp; Context</a>
       <a href="#sec-22"><span class="n">22</span>Build a Skill</a>
       <a href="#sec-23"><span class="n">23</span>Host a Marketplace</a>
@@ -490,7 +490,7 @@ and timelines.</pre>
       <ul class="feature-list">
         <li><strong>Agentic loop.</strong> Claude reads your prompt, picks the tools it needs (Read, Edit, Bash, WebFetch, and others), runs them, and keeps going until the task is done.</li>
         <li><strong>Session-based.</strong> Each conversation has its own context window. Resume, branch, or fork it later.</li>
-        <li><strong>Runs almost anywhere:</strong> local terminal, VS Code and JetBrains extensions, the desktop app, claude.ai/code in the browser, Slack, or headless in CI/CD.</li>
+        <li><strong>Two ways in, same engine:</strong> the CLI in a terminal (including VS Code's integrated terminal), or the VS Code extension's graphical panel. This reference covers both, and section 20 lists exactly where they differ.</li>
       </ul>
     </section>
     <section id="sec-7" class="c">
@@ -572,6 +572,18 @@ claude                                     <span class="cmt"># interactive sessi
 claude "summarise the notes in ./research"  <span class="cmt"># one-shot prompt</span></pre>
       </div>
 
+      <h4 class="subsec">Also want the VS Code extension?</h4>
+      <p>The CLI above works in any terminal, VS Code's included. The extension adds a graphical panel on top: inline diffs, an @-mention picker, and automatic context from your selection. Install it separately.</p>
+      <ol class="step-list">
+        <li>In VS Code, press <code>Cmd+Shift+X</code> (Mac) or <code>Ctrl+Shift+X</code> (Windows/Linux) to open Extensions.</li>
+        <li>Search "Claude Code" and click <strong>Install</strong>.</li>
+        <li>Click the Spark icon in the editor toolbar (appears once a file is open), or use the Command Palette and type "Claude Code."</li>
+      </ol>
+      <div class="callout">
+        <span class="icon">!</span>
+        <p><strong>The extension does not put <code>claude</code> on your PATH.</strong> It bundles a private copy of the CLI for its own panel only. Do both installs above if you want the terminal command <em>and</em> the graphical panel; they share your login and conversation history either way. More on how they differ in section 20.</p>
+      </div>
+
       <h4 class="subsec">First-session setup</h4>
       <ol class="step-list">
         <li>Run <code>/init</code> to generate a starter <code>CLAUDE.md</code> for the folder.</li>
@@ -589,7 +601,7 @@ claude "summarise the notes in ./research"  <span class="cmt"># one-shot prompt<
 
       <ol class="step-list">
         <li>
-          <strong>Install the extension.</strong> In VS Code, open Extensions and install <strong>Claude Code</strong>. It adds an inline diff view and a prompt panel alongside the CLI. If you'd rather skip the extension, the CLI auto-connects to an open VS Code window on its own.
+          <strong>Have Claude Code ready.</strong> Either surface works for this walkthrough: the CLI (install steps in section 8), the VS Code extension, or both. If you skipped section 8, install the extension from VS Code's Extensions view and search "Claude Code."
         </li>
         <li>
           <strong>Open a working folder.</strong> Open a folder in VS Code (<code>File → Open Folder</code>), then open the integrated terminal (<code>Ctrl+`</code> on Windows/Linux, <code>Cmd+`</code> on macOS). Everything below runs from there.
@@ -1004,7 +1016,7 @@ claude mcp add --transport http &lt;name&gt; &lt;url&gt;   <span class="cmt"># r
 
       <h4 class="subsec">Undo and recovery</h4>
       <ul class="feature-list">
-        <li><strong>Checkpoints.</strong> Snapshots after each turn. <code>/rewind</code> restores files, the conversation, or both.</li>
+        <li><strong>Checkpoints.</strong> Snapshots after each turn. In the CLI, <code>/rewind</code> restores files, the conversation, or both. In the extension, hover any message for the same three options: fork the conversation, rewind the code, or both.</li>
         <li>Useful, but not a replacement for version control. Bash-driven changes and subagent edits aren't always captured.</li>
       </ul>
 
@@ -1022,21 +1034,37 @@ claude mcp add --transport http &lt;name&gt; &lt;url&gt;   <span class="cmt"># r
       </ul>
     </section>
     <section id="sec-20" class="c">
-      <div class="sec-head"><span class="sec-num">20</span><h3 class="sec-title">Platforms &amp; Integrations</h3></div>
+      <div class="sec-head"><span class="sec-num">20</span><h3 class="sec-title">CLI vs. VS Code Extension</h3></div>
+      <p>Both are the same Claude Code engine: same models, same CLAUDE.md, same hooks, skills, and MCP servers. The CLI is the full interface. The extension wraps it in a graphical panel with a few trade-offs worth knowing before you rely on one over the other.</p>
+
       <div class="table-wrap">
-        <table>
-          <thead><tr><th>Surface</th><th>Notes</th></tr></thead>
+        <table class="cmd-table">
+          <thead><tr><th>Feature</th><th>CLI</th><th>Extension</th></tr></thead>
           <tbody>
-            <tr><td>VS Code / JetBrains</td><td>Native extension with inline diff review, a prompt box, and CLI fallback</td></tr>
-            <tr><td>Desktop app</td><td>Hosts Chat, Cowork, and Code in one place; supports computer use, browser control, and parallel sessions</td></tr>
-            <tr><td>Claude Code on the web</td><td>Cloud-hosted sessions tied to GitHub repos; teleport a session to or from your terminal</td></tr>
-            <tr><td>Slack</td><td>Trigger and monitor sessions from a channel through @mentions</td></tr>
-            <tr><td>Claude in Chrome</td><td>Browser automation: test web apps, fill forms, extract data</td></tr>
-            <tr><td>GitHub Actions / GitLab CI</td><td>Automated code review, @claude comments on PRs, scheduled CI runs</td></tr>
-            <tr><td>Mobile app</td><td>Monitor cloud and Cowork sessions, get push notifications, and use Remote Control to steer a local session</td></tr>
+            <tr><td>Commands &amp; skills</td><td>All</td><td>Subset (type <code>/</code> to see what's available)</td></tr>
+            <tr><td>MCP server config</td><td>Full</td><td>Partial: add servers via CLI, manage existing ones with <code>/mcp</code> in the panel</td></tr>
+            <tr><td>Checkpoints</td><td>Yes, <code>/rewind</code></td><td>Yes, hover a message for a rewind button</td></tr>
+            <tr><td><code>!</code> bash shortcut</td><td>Yes</td><td>No</td></tr>
+            <tr><td>Tab completion</td><td>Yes</td><td>No</td></tr>
+            <tr><td>Selection &amp; open-file context</td><td>Via <code>/ide</code> or an integrated terminal</td><td>Automatic. Highlighted code and the open file are always visible to Claude</td></tr>
           </tbody>
         </table>
       </div>
+
+      <div class="callout">
+        <span class="icon">!</span>
+        <p><strong>Two separate installs, one shared history</strong> (setup steps in section 8). Whichever you install, run <code>claude --resume</code> in the terminal to pick up a conversation you started in the other one.</p>
+      </div>
+
+      <h4 class="subsec">Nuances worth knowing</h4>
+      <ul class="feature-list">
+        <li><strong>Selected code is automatic context in the extension.</strong> Highlight a range and Claude sees it without an @-mention. Press <code>Option+K</code> (Mac) / <code>Alt+K</code> (Windows/Linux) to also insert an explicit <code>@file.ts#5-10</code> reference into your prompt.</li>
+        <li><strong>The CLI needs a connection to get the same context.</strong> Run it from VS Code's integrated terminal and it connects automatically. From an external terminal, run <code>/ide</code> to connect it to a running VS Code window.</li>
+        <li><strong>Diagnostics and diffs share one path.</strong> Whichever surface you're in, edits open in VS Code's native diff viewer and Claude can read the Problems panel. This runs through a local IDE connection the extension starts, not a public server.</li>
+        <li><strong>Plugins stay in sync.</strong> Type <code>/plugins</code> in the extension panel for a graphical install/manage view. It uses the same CLI commands underneath, so a plugin added in one surface shows up in the other.</li>
+        <li><strong>Background/long-running commands are easier to watch in the CLI.</strong> The extension shows progress in the status bar but with less detail. For a command you'll want to monitor closely, ask Claude to print it so you can run it yourself in the integrated terminal.</li>
+        <li><strong>Terminal mode is one setting away.</strong> Prefer the CLI's look and feel but want it inside the extension's panel anyway? Toggle <code>claudeCode.useTerminal</code> in VS Code settings.</li>
+      </ul>
     </section>
     <section id="sec-21" class="c">
       <div class="sec-head"><span class="sec-num">21</span><h3 class="sec-title">Managing Cost &amp; Context</h3></div>
