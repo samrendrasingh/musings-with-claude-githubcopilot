@@ -385,6 +385,7 @@
       <a href="#sec-22"><span class="n">22</span>Build a Skill</a>
       <a href="#sec-23"><span class="n">23</span>Host a Marketplace</a>
       <a href="#sec-24"><span class="n">24</span>Where to Start</a>
+      <a href="#sec-25" style="font-weight:700; color:var(--amber);">⚡<span class="n" style="margin-left:2px;">25</span>Productivity Exercise</a>
     </nav>
   </aside>
 
@@ -1224,6 +1225,11 @@ claude mcp add --transport http &lt;name&gt; &lt;url&gt;   <span class="cmt"># r
       <div class="sec-head"><span class="sec-num">22</span><h3 class="sec-title">Build Your Own Skill (and Package It as a Plugin)</h3></div>
       <p>If you keep pasting the same instructions into chat, or a section of your CLAUDE.md has grown into its own procedure, that's a skill.</p>
 
+      <div class="callout">
+        <span class="icon">⚡</span>
+        <p><strong>Faster than doing this by hand:</strong> just ask Claude. "Help me turn this into a skill" or "build me a skill for X" is often enough. Many environments, Claude Code and Cowork included, ship with a <code>skill-creator</code> skill that runs the whole loop itself: drafts the SKILL.md, writes test prompts, runs them, and iterates on the description until triggering is reliable, then packages the result. What follows is what's happening underneath, useful for understanding it, editing by hand, or the cases where <code>skill-creator</code> isn't available in your setup.</p>
+      </div>
+
       <h4 class="subsec">The minimum a skill needs</h4>
       <p>A folder with one file: <code>SKILL.md</code>. YAML frontmatter, then markdown instructions.</p>
       <div class="codeblock">
@@ -1426,6 +1432,49 @@ claude plugin validate ./release-tools</pre>
         <li>Package house style and review checklists as a shared plugin or skill. One definition works in both Claude Code and the Office add-ins.</li>
         <li>Decide the org position on Auto mode and Bypass mode before the 14 Aug 2026 default change, not after.</li>
       </ul>
+    </section>
+
+    <section id="sec-25" class="c">
+      <div class="sec-head"><span class="sec-num">25</span><h3 class="sec-title">One Exercise: Teach Claude Once, Automate Forever</h3></div>
+      <p>Twenty minutes, start to finish. Pick something you already do and never do it the slow way again. It also happens to be the fastest way to see sections <a href="#sec-7">7</a>, <a href="#sec-9">9</a>, <a href="#sec-16">16</a>, and <a href="#sec-22">22</a> work together instead of as separate ideas.</p>
+
+      <ol class="step-list">
+        <li>
+          <strong>Find the task.</strong> <em style="color:var(--text-dim); font-style:normal; font-size:12.5px;">~2 min</em><br>
+          Something you do more than once a month that follows a pattern and mildly annoys you. A status report, a weekly summary, a code review checklist, a data cleanup, a client update. It doesn't have to involve code.
+        </li>
+        <li>
+          <strong>Do it once, with Claude driving.</strong> <em style="color:var(--text-dim); font-style:normal; font-size:12.5px;">~10 min</em><br>
+          Open Claude Code in the relevant folder and walk it through the task in plain language, step by step, the way you'd explain it to a new hire on their first day.
+        </li>
+        <li>
+          <strong>Ask Claude to skill-ify it.</strong> <em style="color:var(--text-dim); font-style:normal; font-size:12.5px;">~5 min</em><br>
+          One prompt starts the whole thing. If your setup has the <code>skill-creator</code> skill (section <a href="#sec-22">22</a>), this single request kicks off drafting, test-case generation, and description tuning on its own; you may be done after this step. If not, Claude writes the <code>SKILL.md</code> directly from the transcript of what you actually did.
+        </li>
+        <li>
+          <strong>Test it.</strong> <em style="color:var(--text-dim); font-style:normal; font-size:12.5px;">~3 min</em><br>
+          If <code>skill-creator</code> already ran its own tests, skim the results and confirm they look right. Otherwise, run it yourself on a fresh case with the slash command. Either way, if it doesn't fire on its own the second time, the fix is almost always the description, not the instructions (section <a href="#sec-22">22</a> covers why).
+        </li>
+      </ol>
+
+      <div class="codeblock">
+        <div class="cb-head"><span>prompt, step 3</span><button class="copy-btn" data-copy="Turn what you just did into a skill I can reuse. Write the SKILL.md, name it something I'll recognise later, and keep the instructions as short as you can while still getting the same result.">Copy</button></div>
+        <pre>Turn what you just did into a skill I can reuse. Write the
+SKILL.md, name it something I'll recognise later, and keep the
+instructions as short as you can while still getting the same
+result.</pre>
+      </div>
+
+      <h4 class="subsec">Stuck on what to pick?</h4>
+      <ul class="feature-list">
+        <li><strong>Knowledge workers:</strong> the report you reformat every Monday, the meeting notes you turn into action items, the client update you rewrite from the same three data points each time.</li>
+        <li><strong>Engineers:</strong> the PR description you write the same way every time, the changelog you compile by hand, the local setup steps you re-explain to every new hire.</li>
+      </ul>
+
+      <div class="callout">
+        <span class="icon">i</span>
+        <p><strong>Bonus round, five more minutes:</strong> package it as a plugin and drop it in the team marketplace (sections <a href="#sec-22">22</a> and <a href="#sec-23">23</a>). The next person who has this same Monday-morning task never has to run steps 1 through 4 at all.</p>
+      </div>
     </section>
 
     <footer>
