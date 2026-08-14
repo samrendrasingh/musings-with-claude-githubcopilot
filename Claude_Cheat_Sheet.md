@@ -327,7 +327,6 @@ git push
 
 ---
 
-*Compiled from official Anthropic documentation at docs.claude.com, support.claude.com, and code.claude.com/docs. Accessed 13 Aug 2026. These products change quickly. Check `/release-notes` in Claude Code, or the relevant Help Centre article, before treating any detail here as current.*
 ## 10. Core Concepts
 
 | Concept | What it means |
@@ -642,6 +641,8 @@ Both are the same Claude Code engine: same models, same CLAUDE.md, same hooks, s
 
 If you keep pasting the same instructions into chat, or a section of your CLAUDE.md has grown into its own procedure, that's a skill.
 
+> **Faster than doing this by hand:** just ask Claude. "Help me turn this into a skill" or "build me a skill for X" is often enough. Many environments, Claude Code and Cowork included, ship with a `skill-creator` skill that runs the whole loop itself: drafts the SKILL.md, writes test prompts, runs them, and iterates on the description until triggering is reliable, then packages the result. What follows is what's happening underneath, useful for understanding it, editing by hand, or the cases where `skill-creator` isn't available in your setup.
+
 **The minimum a skill needs**
 
 A folder with one file: `SKILL.md`. YAML frontmatter, then markdown instructions.
@@ -801,3 +802,39 @@ For a private marketplace pulled in CI, export a token with read access as `GH_T
 
 ---
 
+## 25. One Exercise: Teach Claude Once, Automate Forever
+
+Twenty minutes, start to finish. Pick something you already do and never do it the slow way again. It also happens to be the fastest way to see [section 7](#7-not-just-for-code), [section 9](#9-your-first-claude-code-project-html-from-a-github-repo-vs-code), [section 16](#16-skills--plugins), and [section 22](#22-build-your-own-skill-and-package-it-as-a-plugin) work together instead of as separate ideas.
+
+**1. Find the task** *(~2 min)*
+
+Something you do more than once a month that follows a pattern and mildly annoys you. A status report, a weekly summary, a code review checklist, a data cleanup, a client update. It doesn't have to involve code.
+
+**2. Do it once, with Claude driving** *(~10 min)*
+
+Open Claude Code in the relevant folder and walk it through the task in plain language, step by step, the way you'd explain it to a new hire on their first day.
+
+**3. Ask Claude to skill-ify it** *(~5 min)*
+
+One prompt starts the whole thing. If your setup has the `skill-creator` skill ([section 22](#22-build-your-own-skill-and-package-it-as-a-plugin)), this single request kicks off drafting, test-case generation, and description tuning on its own; you may be done after this step. If not, Claude writes the `SKILL.md` directly from the transcript of what you actually did.
+
+```
+Turn what you just did into a skill I can reuse. Write the
+SKILL.md, name it something I'll recognise later, and keep the
+instructions as short as you can while still getting the same
+result.
+```
+
+**4. Test it** *(~3 min)*
+
+If `skill-creator` already ran its own tests, skim the results and confirm they look right. Otherwise, run it yourself on a fresh case with the slash command. Either way, if it doesn't fire on its own the second time, the fix is almost always the description, not the instructions ([section 22](#22-build-your-own-skill-and-package-it-as-a-plugin) covers why).
+
+**Stuck on what to pick?**
+- **Knowledge workers:** the report you reformat every Monday, the meeting notes you turn into action items, the client update you rewrite from the same three data points each time.
+- **Engineers:** the PR description you write the same way every time, the changelog you compile by hand, the local setup steps you re-explain to every new hire.
+
+> **Bonus round, five more minutes:** package it as a plugin and drop it in the team marketplace ([section 22](#22-build-your-own-skill-and-package-it-as-a-plugin) and [section 23](#23-host-your-own-marketplace)). The next person who has this same Monday-morning task never has to run steps 1 through 4 at all.
+
+---
+
+*Compiled from official Anthropic documentation at docs.claude.com, support.claude.com, and code.claude.com/docs. Accessed 13 Aug 2026. These products change quickly. Check `/release-notes` in Claude Code, or the relevant Help Centre article, before treating any detail here as current.*
